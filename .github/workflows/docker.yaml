@@ -3,24 +3,34 @@ name: Build and push Docker image
 on:
   push:
     branches:
-      - "**"
+      - main
     tags:
       - "v*.*.*"
-  workflow_dispatch:
 
 jobs:
   docker:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    env:
+      DOCKER_IMAGE: ghcr.io/swissfederalarchives/lindas-ld-widget
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -28,9 +38,9 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/swissfederalarchives/lindas-ld-widget
+          images: "${{ env.DOCKER_IMAGE }}"
           tags: |
             type=ref,event=branch
             type=semver,prefix=v,pattern={{version}}
@@ -40,10 +50,15 @@ jobs:
 
       - name: Build and push Docker images
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+          platforms: |
+            linux/amd64
+            linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
