@@ -5,6 +5,24 @@
 
 ---
 
+## January 2026
+
+### 2026-01-26
+
+**DevOps Pipeline Implementation**
+- Created `develop` branch for development workflow
+- Updated `docker.yaml` to build and auto-deploy to TEST on main push
+- Added `deploy-test.yaml` for manual TEST environment override
+- Added `deploy-int.yaml` for manual INT environment promotion
+- Added `deploy-prod.yaml` for manual PROD deployment (requires approval)
+- Added `rollback-test.yaml` for one-click TEST rollback
+- Added `rollback-int.yaml` for one-click INT rollback
+- Added `rollback-prod.yaml` for one-click PROD rollback (requires approval)
+- Each environment maintains a `-previous` tag for instant rollback capability
+- Note: Uses SHA tags for deployment tracking (package.json version is 0.0.0)
+
+---
+
 ## December 2025
 
 ### 2025-12-11
