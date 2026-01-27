@@ -7,6 +7,19 @@
 
 ## January 2026
 
+### 2026-01-27
+
+**Code Quality and Security Fixes**
+- **Security:** Upgraded Angular from 19.2.16 to 19.2.18 to fix XSS vulnerability via unsanitized SVG script attributes (GHSA-jrmj-c5cx-3cw6)
+- **Security:** Fixed SPARQL injection escaping - properly escapes single quotes, backslashes, and control characters in user input
+- **Security:** Sanitized error output - no longer exposes raw JSON response/error objects to end users
+- **Security:** Added Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, and Referrer-Policy headers to nginx config
+- **Bug fix:** Removed `debugger` statement left in production code (ld-widget-config.component.ts)
+- **Bug fix:** Fixed form label `for` attribute mismatch - buttonLabel input now correctly associated with its label (accessibility)
+- **Cleanup:** Removed unused imports (UrlSegment, isNgContainer, filter from rxjs)
+- **Cleanup:** Replaced console.error calls with user-facing error messages
+- **Cleanup:** Simplified SafeSparqlValue type (removed unnecessary SafeValue interface dependency)
+
 ### 2026-01-26
 
 **DevOps Pipeline Implementation**
@@ -131,4 +144,4 @@
 
 ---
 
-*Last updated: 2025-12-15*
+*Last updated: 2026-01-27*
