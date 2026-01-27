@@ -3,9 +3,7 @@ import { HttpClient, HttpClientModule, HttpHeaders, HttpParams } from '@angular/
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 
-import { SafeValue } from '@angular/platform-browser';
-
-interface SafeSparqlValue extends SafeValue { }
+type SafeSparqlValue = string;
 
 @Component({
   standalone: true,
@@ -48,11 +46,11 @@ export class LdWidgetComponent implements OnChanges {
 
   private _executeQuery(variable: SafeSparqlValue) {
     if (!this.endpoint || this.endpoint.length === 0) {
-      console.error('Endpoint is invalid', this.endpoint);
+      this.error = 'Endpoint is not configured.';
       return;
     }
     if (!this.sparqlTemplate || this.sparqlTemplate.length === 0) {
-      console.error('SPARQL Template is invalid', this.sparqlTemplate);
+      this.error = 'SPARQL query template is not configured.';
       return;
     }
 
@@ -80,7 +78,7 @@ export class LdWidgetComponent implements OnChanges {
           if (!contentType?.startsWith('application/sparql-results+json')) {
             // this can happen because stardog is returning a http 200 ok on sparql error
             this.result = [];
-            this.error = JSON.stringify(response, null, 4);
+            this.error = 'The SPARQL endpoint returned an unexpected response format.';
             return;
           }
 
@@ -96,10 +94,11 @@ export class LdWidgetComponent implements OnChanges {
             }) ?? [];
           this.result = table.map((row) => row.join(' '));
         },
-        error: (error) => {
-          // this can happen because stardog is returning a http 200 ok on sparql error
+        error: (err) => {
           this.result = [];
-          this.error = JSON.stringify(error, null, 4);
+          const status = err?.status ?? 0;
+          const statusText = err?.statusText ?? 'Unknown error';
+          this.error = `Request failed: ${status} ${statusText}`;
         }
       }
       );
@@ -110,9 +109,16 @@ export class LdWidgetComponent implements OnChanges {
   }
 
   private _escapeSparql(input: string): SafeSparqlValue {
+    // Escape characters that are special in SPARQL string literals.
+    // Single quotes are escaped because the value is wrapped in single quotes
+    // in the VALUES clause. Backslashes are escaped first to avoid double-escaping.
     return input
-      .replace(/[|\\{}()[\]^$+*?.]/g, '\\\\$&')
-      .replace(/-/g, '\\\\x2d') as SafeSparqlValue;
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t');
   }
 }
 
