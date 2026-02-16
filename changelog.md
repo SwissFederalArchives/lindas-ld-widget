@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fix app.component.spec.ts: remove boilerplate tests referencing non-existent `title` property and `.content span` element, update to test actual component with router-outlet
+- Add `pipeline-main-{run_id}` tag to Docker build workflow for Flux image automation compatibility
 
 ## 2026-02-15
 
