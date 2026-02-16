@@ -1,5 +1,10 @@
 # Changelog - lindas-ld-widget
 
+## 2026-02-16
+
+### Fixed
+- Fix app.component.spec.ts: remove boilerplate tests referencing non-existent `title` property and `.content span` element, update to test actual component with router-outlet
+
 ## 2026-02-15
 
 ### Added
