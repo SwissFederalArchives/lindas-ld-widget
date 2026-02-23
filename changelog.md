@@ -1,5 +1,12 @@
 # Changelog - lindas-ld-widget
 
+## 2026-02-23
+
+### Changed
+- Changed CI tag format from `test_YYYY-MM-DD_HHmmss` to `prod_YYYY-MM-DD_HHmmss`
+- Removed promotion workflow (`promote.yaml`) — no longer needed as this service has a single deployment environment
+- Flux ImagePolicy in gitops-main updated to watch `prod_*` tags directly
+
 ## 2026-02-16
 
 ### Fixed
