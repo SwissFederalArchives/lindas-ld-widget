@@ -1,5 +1,10 @@
 # Changelog - lindas-ld-widget
 
+## 2026-03-02
+
+### Changed
+- Change Docker build tags from `test_*` to `prod_*` on main branch, since ld-widget only has a production environment and does not need a separate test/promote flow
+
 ## 2026-02-16
 
 ### Fixed
