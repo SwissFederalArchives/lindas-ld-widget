@@ -2,9 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { filter, Subject, takeUntil } from 'rxjs';
-import { UrlSegment } from '@angular/router';
-import { isNgContainer } from '@angular/compiler';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-ld-widget-config',
@@ -52,7 +50,6 @@ export class LdWidgetConfigComponent implements OnInit, OnDestroy, OnChanges {
     this.isLinkValid = this._checkIfLinkValid(endpoint, query);
     if (this.isLinkValid) {
       let buttonQueryParam = '';
-      debugger
       if (buttonLabel.length > 0) {
         buttonQueryParam = `&b=${encodeURIComponent(buttonLabel)}`;
       }
