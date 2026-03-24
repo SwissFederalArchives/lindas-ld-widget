@@ -1,9 +1,11 @@
 # Changelog - lindas-ld-widget
 
-## 2026-03-02
+## 2026-02-23
 
 ### Changed
-- Change Docker build tags from `test_*` to `prod_*` on main branch, since ld-widget only has a production environment and does not need a separate test/promote flow
+- Changed CI tag format from `test_YYYY-MM-DD_HHmmss` to `prod_YYYY-MM-DD_HHmmss`
+- Removed promotion workflow (`promote.yaml`) — no longer needed as this service has a single deployment environment
+- Flux ImagePolicy in gitops-main updated to watch `prod_*` tags directly
 
 ## 2026-02-16
 
